@@ -88,23 +88,24 @@ if __name__ == '__main__':
 
     rknnThread(group=None).start()
 
-    vcap = cv2.VideoCapture("http://172.18.1.22:3310/live_stream/2/stream.flv?profile_id=0")
+    vcap = cv2.VideoCapture("http://172.18.1.22:3310/live_stream/3/stream.flv")
 
     index_count = 0
     while (1):
         et, img_src = vcap.read()
-        img_src_resized = cv2.resize(img_src, dsize=(960, 540))
+        if img_src is not None:
+            img_src_resized = cv2.resize(img_src, dsize=(640, 360))
 
-        index_count = index_count+1
-        if index_count == 25:
-            index_count = 0
-            list_before.append(img_src_resized.copy())
+            index_count = index_count+1
+            if index_count == 6:
+                index_count = 0
+                list_before.append(img_src_resized.copy())
 
-        if len(list_after) != 0:
-            boxes_after_rknn = list_after[0]
-            del list_after[0]
-            cv2.imshow("RKNN", boxes_after_rknn)
+            if len(list_after) != 0:
+                boxes_after_rknn = list_after[0]
+                del list_after[0]
+                cv2.imshow("RKNN", boxes_after_rknn)
+                cv2.waitKey(1)
+
+            cv2.imshow("LIVE", img_src_resized)
             cv2.waitKey(1)
-
-        cv2.imshow("LIVE", img_src_resized)
-        cv2.waitKey(1)
