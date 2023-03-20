@@ -8,7 +8,7 @@ sudo apt install python3-pip python-pip virtualenv autopep8
 
 # init
 virtualenv venv --python=python3.7
-pip3 install opencv-python
+pip3 install opencv-python ffmpeg-python
 
 # rknn
 git clone https://github.com/rockchip-linux/rknpu2.git

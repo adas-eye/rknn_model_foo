@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 
 IMG_SIZE = (640, 640)
 OBJ_THRESH = 0.50
@@ -141,3 +142,39 @@ def yolov5_post_process(input_data, anchors):
     scores = np.concatenate(nscores)
 
     return boxes, classes, scores
+
+
+CLASSES = (
+    "person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat", "traffic light",
+    "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant",
+    "bear", "zebra", "giraffe", "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard",
+    "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", "surfboard", "tennis racket", "bottle",
+    "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange", "broccoli",
+    "carrot", "hot dog", "pizza", "donut", "cake", "chair", "sofa", "pottedplant", "bed", "diningtable", "toilet",
+    "tvmonitor", "laptop", "mouse", "remote", "keyboard", "cell phone", "microwave", "oven", "toaster", "sink",
+    "refrigerator", "book", "clock", "vase", "scissors", "teddy bear", "hair drier", "toothbrush ")
+
+
+def draw_box(image, boxes, scores, classes):
+    """Draw the boxes on the image.
+
+    # Argument:
+        image: original image.
+        boxes: ndarray, boxes of objects.
+        classes: ndarray, classes of objects.
+        scores: ndarray, scores of objects.
+        all_classes: all classes name.
+    """
+    height, width = image.shape[:2]
+    cw = width/IMG_SIZE[0]
+    ch = height/IMG_SIZE[1]
+    if boxes is not None:
+        for box, score, cl in zip(boxes, scores, classes):
+            x1, y1, x2, y2 = box
+            x1 = int(x1*cw)
+            y1 = int(y1*ch)
+            x2 = int(x2*cw)
+            y2 = int(y2*ch)
+
+            cv2.rectangle(image, (x1, y1), (x2, y2), (255, 0, 0), 2)
+            cv2.putText(image, '{0} {1:.2f}'.format(CLASSES[cl], score), (x1, y1 - 6), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)

@@ -9,7 +9,7 @@ class RKNN_model_container():
         rknn.load_rknn(model_path)
 
         print('--> Init runtime environment')
-        ret = rknn.init_runtime(core_mask=RKNNLite.NPU_CORE_0)
+        ret = rknn.init_runtime(core_mask=RKNNLite.NPU_CORE_0_1_2)
         if ret != 0:
             print('Init runtime environment failed')
             exit(ret)
