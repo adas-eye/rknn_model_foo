@@ -4,3 +4,4 @@ freq_set_status
 *.whl
 rknn-toolkit2
 rknpu2
+ext
